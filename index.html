@@ -78,7 +78,7 @@
           <!-- search by country name -->
           <div class="form-floating mb-3 placeholder-wave">
             <input type="text" class="js-search-input form-control shadow-none placeholder border-end-0 border-start-0 rounded-0  shadow-sm" id="floatingInput" placeholder="name@example.com" value="" style="width: 200px; height: 40px; padding-top: 20px;">
-            <label for="floatingInput" style="padding-top: 6px;">Search by music name</label>
+            <label for="floatingInput" style="padding-top: 6px;">Search news</label>
           </div>
 
           <!-- search btn -->
@@ -102,17 +102,17 @@
           </span>
         </p>
       </div>
-      <!-- music list -->
-      <ul class="js-music-list list-unstyled d-flex flex-wrap justify-content-between mt-4">
+      <!-- news list -->
+      <ul class="js-news-list list-unstyled d-flex flex-wrap justify-content-between mt-4">
       </ul>
-      <!-- end music list -->
+      <!-- end news list -->
       <div class="pagination"></div>
     </div>
   </section>
 </main>
 <!-- Button trigger modal -->
 
-<!-- main music list template -->
+<!-- main news list template -->
 <template id="template-element">
   <li class="mb-4 d-flex w-100">
     <!-- card heading -->
@@ -120,12 +120,12 @@
       <div class="d-flex">
         <!-- card image -->
       <div class="img-wrapper">
-        <img src="" class="js-music-img card-img-top shadow-sm rounded-0" alt="" width="555">
+        <img src="" class="js-news-img card-img-top shadow-sm rounded-0" alt="" width="555">
       </div>
       <!-- card body -->
       <div class="card-body pb-0" style="height: 285px;">
         <h5 class="js-card-title mb-0 fs-5 fw-bold rounded-4 col-12" style="max-height: 53px;">
-          <span class="js-music-title">
+          <span class="js-news-title">
             N/A
           </span>
         </h5>
@@ -134,7 +134,7 @@
         <!-- release -->
         <li class="list-group-item overflow-auto ps-0" style="max-height: 87px;">
           <h6 class="card-title fs-6 fw-bold rounded-5 mx-1 mb-0">
-            <span class="js-music-artist-name fw-lighter">
+            <span class="js-news-artist-name fw-lighter">
             N/A
           </span>
         </h6>
@@ -145,7 +145,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-c-circle my-1 me-1" viewBox="0 0 16 16">
               <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8Zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0ZM8.146 4.992c-1.212 0-1.927.92-1.927 2.502v1.06c0 1.571.703 2.462 1.927 2.462.979 0 1.641-.586 1.729-1.418h1.295v.093c-.1 1.448-1.354 2.467-3.03 2.467-2.091 0-3.269-1.336-3.269-3.603V7.482c0-2.261 1.201-3.638 3.27-3.638 1.681 0 2.935 1.054 3.029 2.572v.088H9.875c-.088-.879-.768-1.512-1.729-1.512Z"/>
             </svg>
-            <span class="js-music-album-name fw-lighter">
+            <span class="js-news-name fw-lighter">
               N/A
             </span>
           </h6>
@@ -195,7 +195,7 @@
               <div class="modal-body js-modal-body overflow-hidden">
                 <div class="modal-inner">
                   <div class="modal-img-wrapper w-100" style="height: 400px;">
-                    <img src="" class="js-modal-music-img rounded-1" alt="" width="100%">
+                    <img src="" class="js-modal-news-img rounded-1" alt="" width="100%">
                   </div>
                   <!-- modal info -->
                   <div class="modal-info-box ms-0 w-100">
@@ -204,7 +204,7 @@
                     <div class="rating-and-runtime-box d-flex justify-content-between align-items-center mt-2 mx-2">
                       <!-- Independent -->
                       <h6 class="card-title fs-6 fw-bold mb-0 text-white" style="background-color: rgba(113, 112, 112, 0.595);">
-                        <span class="js-music-disc fw-lighter">
+                        <span class="js-news-content fw-lighter">
                           N/A
                         </span>
                       </h6>
@@ -253,7 +253,7 @@
 </div>
   </li>
 </template>
-<!-- end main music list template -->
+<!-- end main news list template -->
 <style>
   ::-webkit-scrollbar {
     width: 8px;
