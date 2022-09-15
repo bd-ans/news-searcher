@@ -81,7 +81,7 @@ let searchRequest = 'us';
 // default api request
 const defaultNews = async news => {
     try {
-        const urlApi = await fetch(`https://newsapi.org/v2/top-headlines?country=${searchRequest}&apiKey=6fd18f4af64147edae5be3f19f66020c`);
+        const urlApi = await fetch(`https://newsapi.org/v2/top-headlines?country=${searchRequest}&apiKey=8d5f7832f1fb4308ad23ca093672fb57`);
         const data = await urlApi.json();
         
         if (data.status === 404) {
@@ -109,7 +109,7 @@ defaultNews();
 // api request
 const searchNews = async news => {
     try {
-        const urlApi = await fetch(`https://newsapi.org/v2/top-headlines?country=${searchRequest}&q=${news}&apiKey=6fd18f4af64147edae5be3f19f66020c`);
+        const urlApi = await fetch(`https://newsapi.org/v2/top-headlines?country=${searchRequest}&q=${news}&apiKey=8d5f7832f1fb4308ad23ca093672fb57`);
         const data = await urlApi.json();
         
         if (data.status === 404) {
