@@ -109,7 +109,7 @@ defaultNews();
 let cloneArr = [];
 
 // api request
-const searchMusics = async news => {
+const searchNews = async news => {
     try {
         const urlApi = await fetch(`https://newsapi.org/v2/top-headlines?country=${searchRequest}&q=${news}&apiKey=6fd18f4af64147edae5be3f19f66020c`);
         const data = await urlApi.json();
@@ -145,7 +145,7 @@ elSearchSelect.addEventListener('change', () => {
         defaultNews();
     } else {
         searchRequest = elSearchSelect.value;
-        searchMusics(searchRequest);
+        searchNews(searchRequest);
         newsList.innerHTML = null;
         arr = [];
         elSearchBtn.disabled = true;
@@ -172,7 +172,7 @@ elSearchBtn.onclick = function () {
     elSearchBtn.disabled = true;
     elSearchBtn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
 
-    searchMusics(value)
+    searchNews(value)
     }
 }
 
