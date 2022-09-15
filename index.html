@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="./img/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon/favicon-16x16.png">
+  <!-- search movie by Kantor Tegalsari from <a href="https://thenounproject.com/browse/icons/term/search-movie/" target="_blank" title="search movie Icons">Noun Project</a> -->
+  <!-- <div> Автор иконок: <a href="https://www.flaticon.com/ru/authors/dinosoftlabs" title="DinosoftLabs"> DinosoftLabs </a> from <a href="https://www.flaticon.com/ru/" title="Flaticon">www.flaticon.com'</a></div> -->
+  <title>News Searcher</title>
+  <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+
+<main class="main" style="pointer-events: none;">
+  <section id="section">
+    <div class="container">
+      <!-- search box -->
+      <div class="search-box mt-3 d-flex align-items-center justify-content-end">
+        <div class="d-flex justify-content-end">
+          <!-- search by country name -->
+          <div class="form-floating mb-3 placeholder-wave">
+            <input type="text" class="js-search-input form-control shadow-none placeholder border-end-0 rounded-0 rounded-start shadow-sm" id="floatingInput" placeholder="name@example.com" value="" style="width: 200px; height: 40px; padding-top: 20px;">
+            <label for="floatingInput" style="padding-top: 6px;">Search by music name</label>
+          </div>
+
+          <!-- search btn -->
+          <button class="js-search-btn btn btn-light placeholder-wave d-flex justify-content-center placeholder align-items-center rounded-0 rounded-end border px-3 text-secondary m-0 shadow-none text-opacity-50" style="height: 40px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <!-- fail box -->
+      <div class="fail-box d-flex align-items-center justify-content-end" style="height: 12px;">
+        <p class="fail-txt js-fail-txt text-danger d-none fw-bold fs-5 mb-0" style="margin-top: -15px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-expressionless mb-1" viewBox="0 0 16 16">
+          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+          <path d="M4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm5 0a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
+          </svg>
+            Sorry! 
+          <span class="fw-normal">
+            search results not found
+          </span>
+        </p>
+      </div>
+      <!-- music list -->
+      <ul class="js-music-list list-unstyled d-flex flex-wrap justify-content-between mt-4">
+      </ul>
+      <!-- end music list -->
+    </div>
+  </section>
+</main>
+<!-- Button trigger modal -->
+
+<!-- main music list template -->
+<template id="template-element">
+  <li class="mb-4 d-flex w-100">
+    <!-- card heading -->
+    <div class="card position-relative overflow-hidden shadow d-flex w-100" style="height: 18rem">
+      <div class="d-flex">
+        <!-- card image -->
+      <div class="img-wrapper">
+        <img src="" class="js-music-img card-img-top shadow-sm rounded-0" alt="" width="555">
+      </div>
+      <!-- card body -->
+      <div class="card-body pb-0" style="height: 285px;">
+        <h5 class="js-card-title mb-0 fs-5 fw-bold rounded-4 col-12" style="max-height: 53px;">
+          <span class="js-music-title">
+            N/A
+          </span>
+        </h5>
+        <!-- list group -->
+      <ul class="list-group list-group-flush overflow-auto">
+        <!-- release -->
+        <li class="list-group-item overflow-auto ps-0" style="max-height: 87px;">
+          <h6 class="card-title fs-6 fw-bold rounded-5 mx-1 mb-0">
+            <span class="js-music-artist-name fw-lighter">
+            N/A
+          </span>
+        </h6>
+        </li>
+        <!-- Population -->
+        <li class="list-group-item ps-0 d-flex align-items-center justify-content-between">
+          <h6 class="card-title fs-6 fw-bold rounded-5 d-flex align-items-center mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-c-circle my-1 me-1" viewBox="0 0 16 16">
+              <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8Zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0ZM8.146 4.992c-1.212 0-1.927.92-1.927 2.502v1.06c0 1.571.703 2.462 1.927 2.462.979 0 1.641-.586 1.729-1.418h1.295v.093c-.1 1.448-1.354 2.467-3.03 2.467-2.091 0-3.269-1.336-3.269-3.603V7.482c0-2.261 1.201-3.638 3.27-3.638 1.681 0 2.935 1.054 3.029 2.572v.088H9.875c-.088-.879-.768-1.512-1.729-1.512Z"/>
+            </svg>
+            <span class="js-music-album-name fw-lighter">
+              N/A
+            </span>
+          </h6>
+          <h6 class="card-title fs-6 fw-bold rounded-5 d-flex align-items-center mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-range me-1" viewBox="0 0 16 16">
+              <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"/>
+              <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4zM9 8a1 1 0 0 1 1-1h5v2h-5a1 1 0 0 1-1-1zm-8 2h4a1 1 0 1 1 0 2H1v-2z"/>
+            </svg>
+            <span class="js-news-published-time fw-lighter">
+              N/A
+            </span>
+          </h6>
+        </li>
+        <!-- Population -->
+        <li class="list-group-item ps-0 d-flex align-items-center justify-content-between me-0">
+          <h6 class="card-title fs-6 fw-bold rounded-5 d-flex align-items-center mb-0">
+            <a href="" target="_blank" class="js-news-source-link text-decoration-none d-flex align-items-center">
+              Source Link
+              <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-link ms-1" viewBox="0 0 16 16">
+                <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+                <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>
+              </svg>
+            </a>
+          </h6>
+          <h6 class="card-title fs-6 fw-bold rounded-5 d-flex align-items-center js-news-author-link text-decoration-none d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-badge" viewBox="0 0 16 16">
+              <path d="M6.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+              <path d="M4.5 0A2.5 2.5 0 0 0 2 2.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2.5A2.5 2.5 0 0 0 11.5 0h-7zM3 2.5A1.5 1.5 0 0 1 4.5 1h7A1.5 1.5 0 0 1 13 2.5v10.795a4.2 4.2 0 0 0-.776-.492C11.392 12.387 10.063 12 8 12s-3.392.387-4.224.803a4.2 4.2 0 0 0-.776.492V2.5z"/>
+            </svg>
+            <span class="js-news-author fw-lighter">
+              N/A
+            </span>
+          </h6>
+        </li>
+
+        <!-- lists end -->
+        <!-- Modal -->
+        <div class="modal modal-xl fade js-modal" id="exampleModalTest" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content" style="max-height: 753px;">
+              <!-- modal header -->
+              <div class="modal-header py-1">
+                <h5 class="modal-title js-modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <!-- modal body -->
+              <div class="modal-body js-modal-body overflow-hidden">
+                <div class="modal-inner">
+                  <div class="modal-img-wrapper w-100" style="height: 400px;">
+                    <img src="" class="js-modal-music-img rounded-1" alt="" width="100%">
+                  </div>
+                  <!-- modal info -->
+                  <div class="modal-info-box ms-0 w-100">
+                    <hr class="mt-0 mb-0 ">
+                    <!-- other informs -->
+                    <div class="rating-and-runtime-box d-flex justify-content-between align-items-center mt-2 mx-2">
+                      <!-- Independent -->
+                      <h6 class="card-title fs-6 fw-bold mb-0 text-white" style="background-color: rgba(113, 112, 112, 0.595);">
+                        <span class="js-music-disc fw-lighter">
+                          N/A
+                        </span>
+                      </h6>
+                    </div>
+                    <hr class="mt-2 mb-0">
+
+                    <div class="rating-and-runtime-box d-flex justify-content-between align-items-center mt-2 mx-2">
+                      <!-- shortcuts -->
+                      <h6 class="card-title fs-6 fw-bold mb-0" style="background-color: rgba(219, 219, 219, 0.902);">
+                        <a href="" target="_blank" class="js-news-modal-source-link text-decoration-none d-flex align-items-center">
+                          Source Link
+                          <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-link ms-1" viewBox="0 0 16 16">
+                            <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+                            <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>
+                          </svg>
+                        </a>
+                      </h6>
+                      <h6 class="card-title fs-6 fw-bold mb-0" style="background-color: rgba(219, 219, 219, 0.902);">
+                        <a href="" target="_blank" class="js-news-modal-image-link text-decoration-none d-flex align-items-center">
+                          View Full Image
+                          <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-card-image ms-1" viewBox="0 0 16 16">
+                            <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                            <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54A.505.505 0 0 1 1 12.5v-9a.5.5 0 0 1 .5-.5h13z"/>
+                          </svg>
+                        </a>
+                      </h6>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <!-- modal btn -->
+              <div class="modal-footer py-1">
+                <button type="button" class="btn btn-light border-secondary shadow-sm" data-bs-dismiss="modal">Close</button>
+              </div>
+              <!-- modal btn -->
+            </div>
+          </div>
+        </div>
+        <!-- Modal end-->
+      </ul>
+      <button type="button" class="btn btn-light border-secondary shadow-sm js-modal-btn mb-2 rounded bottom-0 position-absolute me-3 px-4 border-opacity-25" data-bs-toggle="modal" data-bs-target="#exampleModalTest" style="right: 0;">
+        More Info
+      </button>
+    </div>
+  </div>
+</div>
+  </li>
+</template>
+<!-- end main music list template -->
+<style>
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px transparent; 
+    border-radius: 5px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(83, 81, 81, 0.521); 
+    border-radius: 10px;
+  }
+  body {
+    height: 150vh;
+    overflow: scroll;
+  }
+</style>
+  
+  <script src="./bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="./bootstrap/js/bootstrap.min.js"></script>  
+  <script src="./js/utils.js"></script>
+  <script src="./js/placeholder.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+</html>
