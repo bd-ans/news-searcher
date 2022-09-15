@@ -106,8 +106,6 @@ const defaultNews = async news => {
 }
 defaultNews();
 
-let cloneArr = [];
-
 // api request
 const searchNews = async news => {
     try {
