@@ -74,12 +74,12 @@ function mainFunc() {
     }
 }
 
-let searchRequest = '';
+let searchRequest = 'us';
 
 // default api request
 const defaultNews = async music => {
     try {
-        const urlApi = await fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=d952d80e042d4405b01a3812c2384048');
+        const urlApi = await fetch(`https://newsapi.org/v2/top-headlines?country=${searchRequest}&apiKey=d952d80e042d4405b01a3812c2384048`);
         const data = await urlApi.json();
         
         if (data.status === 404) {
@@ -133,6 +133,7 @@ const searchMusics = async music => {
 
 elSearchSelect.addEventListener('change', () => {
     if (elSearchSelect.value === 'default') {
+        searchRequest = 'us';
         defaultNews();
     } else {
         searchRequest = elSearchSelect.value;
