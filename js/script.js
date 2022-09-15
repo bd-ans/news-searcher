@@ -79,7 +79,7 @@ let searchRequest = 'us';
 // default api request
 const defaultNews = async music => {
     try {
-        const urlApi = await fetch(`https://newsapi.org/v2/top-headlines?country=${searchRequest}&apiKey=d952d80e042d4405b01a3812c2384048`);
+        const urlApi = await fetch(`https://newsapi.org/v2/top-headlines?country=${searchRequest}&apiKey=6fd18f4af64147edae5be3f19f66020c`);
         const data = await urlApi.json();
         
         if (data.status === 404) {
@@ -90,7 +90,7 @@ const defaultNews = async music => {
             elSearchInput.blur();
             elFailTxt.classList.add('d-none');
             arr = data.articles;
-            mainFunc()
+            paginationFunction() ;
         }
     } catch (err) {
         console.log(err);
@@ -104,10 +104,12 @@ const defaultNews = async music => {
 }
 defaultNews();
 
+let cloneArr = [];
+
 // api request
 const searchMusics = async music => {
     try {
-        const urlApi = await fetch(`https://newsapi.org/v2/top-headlines?country=${searchRequest}&q=${music}&apiKey=d952d80e042d4405b01a3812c2384048`);
+        const urlApi = await fetch(`https://newsapi.org/v2/top-headlines?country=${searchRequest}&q=${music}&apiKey=6fd18f4af64147edae5be3f19f66020c`);
         const data = await urlApi.json();
         
         if (data.status === 404) {
@@ -118,26 +120,34 @@ const searchMusics = async music => {
             elSearchInput.blur();
             elFailTxt.classList.add('d-none');
             arr = data.articles;
-            mainFunc()
+            paginationFunction();
         }
     } catch (err) {
         console.log(err);
     } finally {
         elSearchInput.value = '';
-            elSearchBtn.disabled = false;
-            elSearchBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-            </svg>`;
+        elSearchBtn.disabled = false;
+        elSearchBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+        </svg>`;
     }
 }
 
 elSearchSelect.addEventListener('change', () => {
     if (elSearchSelect.value === 'default') {
         searchRequest = 'us';
+        musicsList.innerHTML = null;
+        arr = [];
+        elSearchBtn.disabled = true;
+        elSearchBtn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
         defaultNews();
     } else {
         searchRequest = elSearchSelect.value;
         searchMusics(searchRequest);
+        musicsList.innerHTML = null;
+        arr = [];
+        elSearchBtn.disabled = true;
+        elSearchBtn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
     }
 });
 
@@ -162,4 +172,66 @@ elSearchBtn.onclick = function () {
 
     searchMusics(value)
     }
+}
+
+// Pagination  
+async function paginationFunction() {
+    const postsData = arr;
+    let currentPage = 1;
+    let rows = 5;
+
+    // let pagination calc function
+    function displayList(arrData, rowPerPage, page) {
+        page--;
+
+        const start = rowPerPage * page;
+        const end = start + rowPerPage;
+        const paginatedData = arrData.slice(start, end);
+
+        paginatedData.forEach((el) => {
+        const postEl = document.createElement("div");
+        postEl.classList.add("post");
+        postEl.innerText = `${el.title}`;
+        })
+        arr = paginatedData;
+        mainFunc();
+    }
+
+    // render pagination
+    function displayPagination(arrData, rowPerPage) {
+        const paginationEl = document.querySelector('.pagination');
+        paginationEl.innerHTML = "";
+        const pagesCount = Math.ceil(arrData.length / rowPerPage);
+        const ulEl = document.createElement("ul");
+        ulEl.classList.add('pagination__list');
+    
+        for (let i = 0; i < pagesCount; i++) {
+            const liEl = displayPaginationBtn(i + 1);
+            ulEl.appendChild(liEl)
+        }
+        paginationEl.appendChild(ulEl)
+    }
+    // render pagination btn and func
+    function displayPaginationBtn(page) {
+        const liEl = document.createElement("li");
+        liEl.classList.add('pagination__item')
+        liEl.innerText = page
+    
+        if (currentPage == page) liEl.classList.add('pagination__item--active');
+    
+        liEl.addEventListener('click', () => {
+        currentPage = page
+        displayList(postsData, rows, currentPage)
+
+        let currentItemLi = document.querySelector('li.pagination__item--active');
+        currentItemLi.classList.remove('pagination__item--active');
+
+        liEl.classList.add('pagination__item--active');
+    })
+
+    return liEl;
+    }
+
+    displayList(postsData, rows, currentPage);
+    displayPagination(postsData, rows);
 }
