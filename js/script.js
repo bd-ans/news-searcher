@@ -2,15 +2,16 @@ const musicsList = $('.js-music-list');
 const musicsCardTemplate = $('#template-element').content;
 
 const elSearchInput = $('.js-search-input');
+const elSearchSelect = $('.js-search-select');
 const elSearchBtn = $('.js-search-btn');
 const elFailTxt = $('.js-fail-txt');
 
 let arr = [];
 
-// render function
 function mainFunc() {
     // creating elements for music list
     let createMusicElements = function (arr) {
+
         let musicElement = musicsCardTemplate.cloneNode(true);
         musicElement.querySelector('.js-music-img').src = arr.urlToImage;
         musicElement.querySelector('.js-music-img').alt = arr.title;
@@ -33,18 +34,22 @@ function mainFunc() {
         if (arr.author === null || arr.author === '' || arr.author === undefined || arr.author === 'null') {
             musicElement.querySelector('.js-news-author').textContent = 'No author';
         } else {
-            musicElement.querySelector('.js-news-author').textContent = arr.author;
+            if (arr.author.length >= 20) {
+                musicElement.querySelector('.js-news-author').textContent = arr.author.slice(0, 30) + '...';
+            } else {
+                musicElement.querySelector('.js-news-author').textContent = arr.author;
+            }
         }
         musicElement.querySelector('.js-news-published-time').textContent = arr.publishedAt.slice(0, 10).split('-').reverse().join('.');
         musicElement.querySelector('.js-news-source-link').href = arr.url;
         musicElement.querySelector('.js-news-modal-source-link').href = arr.url;
         musicElement.querySelector('.js-news-modal-image-link').href = arr.urlToImage;
         musicElement.querySelector('.js-music-disc').textContent = arr.content;
-        
-        let modalId = `${arr.title.slice(0, 7).replace(/[^a-z0-9]/gi, '') + arr.description.slice(1, 10 ).replace(/[^a-z0-9]/gi, '') + arr.source.name.slice(0, 5).replace(/[^a-z0-9]/gi, '')}`;
-        musicElement.querySelector('.js-modal').id = `${modalId}`;
-        musicElement.querySelector('.js-modal-title').id = `${modalId}`;
-        musicElement.querySelector('.js-modal-btn').setAttribute('data-bs-target', `#${modalId}`);
+
+        let modalId = `${arr.publishedAt.replace(/[^a-z0-9]/gi, '')}`;
+        musicElement.querySelector('.js-modal').id = `q${modalId}`;
+        musicElement.querySelector('.js-modal-title').id = `q${modalId}`;
+        musicElement.querySelector('.js-modal-btn').setAttribute('data-bs-target', `#q${modalId}`);
 
         return musicElement;
     }
@@ -69,12 +74,12 @@ function mainFunc() {
     }
 }
 
-// api request
-const searchMusics = async music => {
+let searchRequest = '';
+
+// default api request
+const defaultNews = async music => {
     try {
-        const urlApi = await fetch('https://newsapi.org/v2/everything?q='
-                                    +music+
-                                    '&apiKey=6fd18f4af64147edae5be3f19f66020c');
+        const urlApi = await fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=d952d80e042d4405b01a3812c2384048');
         const data = await urlApi.json();
         
         if (data.status === 404) {
@@ -85,7 +90,7 @@ const searchMusics = async music => {
             elSearchInput.blur();
             elFailTxt.classList.add('d-none');
             arr = data.articles;
-            mainFunc();
+            mainFunc()
         }
     } catch (err) {
         console.log(err);
@@ -95,11 +100,45 @@ const searchMusics = async music => {
             elSearchBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
             </svg>`;
-            console.log(arr[0].title.slice(0, 7).replace(/[^a-z0-9]/gi, '') + arr[0].description.slice(1, 10 ).replace(/[^a-z0-9]/gi, '') + arr[0].source.name.slice(0, 5).replace(/[^a-z0-9]/gi, ''));
+    }
+}
+defaultNews();
+
+// api request
+const searchMusics = async music => {
+    try {
+        const urlApi = await fetch(`https://newsapi.org/v2/top-headlines?country=${searchRequest}&q=${music}&apiKey=d952d80e042d4405b01a3812c2384048`);
+        const data = await urlApi.json();
+        
+        if (data.status === 404) {
+            arr = [];
+            elFailTxt.classList.remove('d-none');
+            return;
+        } else {
+            elSearchInput.blur();
+            elFailTxt.classList.add('d-none');
+            arr = data.articles;
+            mainFunc()
+        }
+    } catch (err) {
+        console.log(err);
+    } finally {
+        elSearchInput.value = '';
+            elSearchBtn.disabled = false;
+            elSearchBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>`;
     }
 }
 
-searchMusics('uzbekistan');
+elSearchSelect.addEventListener('change', () => {
+    if (elSearchSelect.value === 'default') {
+        defaultNews();
+    } else {
+        searchRequest = elSearchSelect.value;
+        searchMusics(searchRequest);
+    }
+});
 
 // Search input enter
 elSearchInput.addEventListener('keyup', function (event) {
